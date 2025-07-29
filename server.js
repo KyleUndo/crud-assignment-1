@@ -2,23 +2,8 @@ const express = require("express");
 const app = express();
 const PORT = 5000;
 
-const profile = require("./profiles.json");
+const profiles = require("./profiles.json");
 
-// // nested objecgt
-// const req = {
-//   body: [
-//     {
-//       name: "test",
-//       email: "test",
-//     },
-//   ],
-// };
-
-// const { name, email } = req.body[0];
-
-// console.log("name", name);
-
-// middleware
 app.use(express.json());
 
 // HTTP REQUESTS
@@ -27,43 +12,48 @@ app.use(express.json());
 // PUT
 // DELETE
 
-// const sampleFunction = (name, age) => {
-//   console.log("name", name, age);
-// };
-
-// sampleFunction("John Doe", 12);
-
-// const body = {
-//   name: "test",
-//   email: "test@gmail.com",
-// };
-
-// // destructure
-// const { name, email } = body;
-
-// console.log(name);
-// console.log(email);
-
-// app.post("/api/like", function (req, res) {
-//   res.json({
-//     message: "Liked",
-//   });
-// });
-
 app.get("/api/get-profiles", (req, res) => {
-  res.json(profile);
+  res.json(profiles);
 });
 
-app.post("/api/profile", function (req, res) {
+app.get("/api/get-profile/:id", (req, res) => {
+  const { id } = req.params;
+  const findUser = profiles.find((profile) => profile.id == id);
+
+  return res.json({ findUser });
+});
+
+app.post("/api/profile", (req, res) => {
   const { name, email } = req.body;
 
   const newUser = { name, email };
-  const data = profile.push(newUser);
+  profiles.push(newUser);
 
   res.json({
     message: "Success",
-    data,
+    profiles,
   });
+});
+
+app.delete("/api/delete-profile/:id", (req, res) => {
+  const { id } = req.params;
+  const updatedProfiles = profiles.filter((profile) => profile.id != id);
+
+  return res.json({ message: "Deleted", updatedProfiles });
+});
+
+app.put("/api/update-profile/:id", (req, res) => {
+  const { name, email } = req.body;
+  const { id } = req.params;
+
+  let findUser = profiles.find((profile) => profile.id == id);
+
+  Object.assign(findUser, { name, email });
+
+  // findUser.name = name;
+  // findUser.email = email;
+
+  return res.json({ message: "Updated", profiles });
 });
 
 // API Endpoint
