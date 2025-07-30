@@ -60,3 +60,8 @@ app.put("/api/update-profile/:id", (req, res) => {
 app.listen(PORT, function () {
   console.log(`http://localhost:${PORT}`);
 });
+
+// Members
+// Kyle Ando
+// Jarhaine Lei Acedo
+// Paul Lord Dean Arriesgado
