@@ -26,7 +26,7 @@ app.get("/api/get-profile/:id", (req, res) => {
 app.post("/api/profile", (req, res) => {
   const { name, email } = req.body;
 
-  const newUser = { name, email };
+  const newUser = { id: profiles.length + 1, name, email };
   profiles.push(newUser);
 
   res.json({
