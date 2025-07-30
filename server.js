@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const PORT = 5000;
 
-const profiles = require("./profiles.json");
+let profiles = require("./profiles.json");
 
 app.use(express.json());
 
@@ -37,9 +37,9 @@ app.post("/api/profile", (req, res) => {
 
 app.delete("/api/delete-profile/:id", (req, res) => {
   const { id } = req.params;
-  const updatedProfiles = profiles.filter((profile) => profile.id != id);
+  profiles = profiles.filter((profile) => profile.id != id);
 
-  return res.json({ message: "Deleted", updatedProfiles });
+  return res.json({ message: "Deleted", profiles });
 });
 
 app.put("/api/update-profile/:id", (req, res) => {
